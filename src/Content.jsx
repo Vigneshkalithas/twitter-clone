@@ -1,6 +1,11 @@
 import React ,{useState} from 'react';
 import {ImStarHalf} from "react-icons/im";
 import {FiMoreHorizontal} from "react-icons/fi";
+import {FaRetweet , FaShare} from "react-icons/fa";
+import {BiMessageRounded} from "react-icons/bi";
+import {FcLike} from "react-icons/fc";
+import {FiShare} from "react-icons/fi";
+import "./styles/Content.css"
 
 function Content() {
   const  [tweet ,setTweet] = useState();
@@ -9,6 +14,7 @@ function Content() {
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
   ]);
+  const [editText,setEditText] = useState()
   
   return (
     <div className='content-container'>
@@ -26,12 +32,12 @@ function Content() {
         </div>
         <div className='tweet-btn-head'>
            <button className='btn-tweet' onClick={()=>{
-            setRes([...res,tweet])}}>Tweet</button>
+            setRes([tweet,...res])}}>Tweet</button>
         </div>{res.map((post,index)=>{
           return(
-          <>
-           <Tweets res={res}  setRes={setRes} post={post} index={index}/>
-          </>
+          <div>
+           <Tweets res={res}  editText={editText} setEditText={setEditText} setRes={setRes} post={post} index={index}/>
+          </div>
           )
         })}
        
@@ -40,9 +46,11 @@ function Content() {
   )
 }
 
-function Tweets({res ,setRes, post , index}){
+function Tweets({res ,setRes, post , index , editText,setEditText}){
     const [showoptions,setOptions] = useState(true);
-    const [edit,setEdit] = useState(true)
+    const [edit,setEdit] = useState(true);
+    const [like, setLike] = useState(0);
+    
     return(
         <>
         <div className='tweets-head'>
@@ -63,15 +71,39 @@ function Tweets({res ,setRes, post , index}){
               }}>Delete</button>
               <button onClick={()=>{
              setEdit(!edit)
+             setOptions(!showoptions)
               }}>Edit</button>
               </div>}
         </div>
         <div className='tweet-msg'>
             {edit ?  <p>{post}</p> : 
+                  
+                  <>
                   <form>
-                  <textarea></textarea>
-                  </form>}
+                  <textarea onChange={(e)=>{
+                    setEditText(e.target.value)                   
+                  }}>{post}</textarea>
+                  <button onClick={(e)=>{
+                    e.preventDefault();
+                    const editTweets = [...res]
+                    editTweets.splice(index,1,editText)
+                    setRes(editTweets);
+                    setEdit(!edit)
+                  }}>Submit</button>
+                  </form>
+                  </>
+                  }
+                  
         </div>
+        <div className='footer-emoji'>
+          <span><BiMessageRounded/></span>
+          <span><FaRetweet/></span>
+          <div>
+            <span><FcLike onClick={()=>setLike(like+1)}/></span>
+            <span className='like'>{like}</span>
+          </div>
+          <span><FiShare/></span>
+          </div>
         </>
     )
 }
