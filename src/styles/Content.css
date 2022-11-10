@@ -22,8 +22,9 @@
     padding: .5rem;
   }
   .inputTweet{
-  width: 500px;
+  width: 75%;
   background-color: #000000;
+  /* background-color: red; */
   border: none;
   font-size: 1.3rem;
   letter-spacing: 1px;
@@ -68,7 +69,6 @@
     display: flex;
     gap: .8rem;
     align-items: center;
-    line-height: .5rem;
   }
   .dp-name img{
   width: 50px;
@@ -102,7 +102,7 @@
     /* background-color: purple; */
     border-radius: 10px;
     position: absolute;
-    left: 67%;
+    left: 68%;
       top: 35px;
   }
   .show-options button{
